@@ -1,24 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+
+import "react-toastify/dist/ReactToastify.css";
+import Login from "./pages/users/Login";
+import UserRegister from "./pages/users/UserRegister";
+import FarmerRegister from "./pages/farmers/FarmerRegister";
+import FarmlandRegister from "./pages/farmlands/FarmlandRegister";
+// import Monitorings from "./pages/Monitorings";
+import FarmersList from "./pages/farmers/FarmersList";
+import FarmlandsList from "./pages/farmlands/FarmlandsList";
+import NotFound from "./pages/NotFound";
+import FarmlandDivisionRegister from "./pages/farmlands/FarmlandDivisionRegister";
+import ProtectedRoute from "./components/ProtectedRoute";
+import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
+import Farmer from "./pages/farmers/Farmer";
+import Farmland from "./pages/farmlands/Farmland";
+
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
+const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
+
 
 function App() {
+
+  let user = JSON.parse(localStorage.getItem("user"));
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Suspense
+        fallback={
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center ",
+              width: "100%",
+              height: "90vh",
+              backgroundColor: "gray",
+            }}
+          >
+            <Typography>Carregando...</Typography>
+          </Box>
+        }
+      >
+        <Routes>
+          {/* User Routes */}
+          <Route path="/signin" element={<Login />} />
+          <Route path="/signup" element={<UserRegister />} />
+
+          {/**  Dashboard */}
+          <Route element={<ProtectedRoute user={user} />}>
+            <Route path="/" element={<Dashboard user={user} />} />
+            <Route path="/farmers" element={<FarmerRegister user={user} />} />
+            <Route
+              path="/farmlands"
+              element={<FarmlandRegister user={user} />}
+            />
+            <Route
+              path="/divisions"
+              element={<FarmlandDivisionRegister user={user} />}
+            />
+            <Route path="/farmland-add" element={<FarmlandAdd user={user} />} />
+            <Route path="/farmers-list" element={<FarmersList user={user} />} />
+            <Route
+              path="/farmlands-list"
+              element={<FarmlandsList user={user} />}
+            />
+            <Route path="/farmer" element={<Farmer user={user} />} />
+            <Route path="/farmland" element={<Farmland user={user} />} />
+          </Route>
+
+          {/* <Route path="farmers/success" element={<FarmerExitRegister />} /> */}
+
+          {/* <Route path="home" element={<Home />} /> */}
+
+          {/* <Route path="farmlands-list" element={<FarmlandsList />} /> */}
+          {/* <Route path="monitorings" element={<Monitorings />} /> */}
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 }
 
