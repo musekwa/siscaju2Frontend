@@ -64,6 +64,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "https://cryptic-crag-41787.herokuapp.com/"
+  }
 }
