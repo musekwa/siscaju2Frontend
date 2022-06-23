@@ -58,7 +58,7 @@ if (isLoading) {
 
           {/**  Dashboard */}
           <Route element={<ProtectedRoute user={user} />}>
-            <Route path="/" element={<Dashboard user={user} />} />
+            <Route path="/" element={<Dashboard  />} />
             <Route path="/farmers" element={<FarmerRegister user={user} />} />
             <Route
               path="/farmlands"

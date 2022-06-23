@@ -102,18 +102,21 @@ function UserRegister() {
 
 
   useEffect(() => {
-    if (isError || message || !user?.fullname) {
-      // let errorMessage = message ? message : 'O registo falhou'
-      toast.error(message, {
+    if (isError || message || (user && !user?.fullname)) {
+      let errorMessage = message ? message : "O registo falhou";
+      toast.error(errorMessage, {
         autoClose: 5000,
         position: toast.POSITION.TOP_CENTER,
       });
     } else if (isSuccess) {
-        toast.success(`Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`, {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-      navigate("/", { state: { user }});
+      toast.success(
+        `Olá ${user?.fullname.split(" ")[0]}, Bem-vindo a SisCaju!`,
+        {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
+      navigate("/", { state: { user } });
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, register, dispatch]);

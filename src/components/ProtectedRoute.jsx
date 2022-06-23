@@ -5,9 +5,6 @@ import { useSelector } from "react-redux";
 
 const ProtectedRoute = ({ user, redirectPath = '/signin',  children  }) => {
 
-  
-
-    console.log('protected: ', user)
 
     if (!user) {
         return <Navigate to={redirectPath} replace />;
