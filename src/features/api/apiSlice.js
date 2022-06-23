@@ -14,75 +14,97 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  tagTypes: ["User", "Farmer", "Farmland", "Division", "Monitoring"],
   endpoints: (build) => ({
-    register: build.mutation({
-      query: (body) => ({
-        url: `/register`,
-        method: "POST",
-        body: body,
-      }),
-      invalidatesTags: ["User"],
-      async onQueryStarted(
-        arg,
-        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-      ) {},
-      async onCacheEntryAdded(
-        arg,
-        {
-          dispatch,
-          getState,
-          requestId,
-          extra,
-          getCacheEntry,
-          cacheDataLoaded,
-          cacheEntryRemoved,
-        }
-      ) {},
-    }),
-    login: build.mutation({
-      query: (body) => ({
-        url: `/login`,
-        method: "POST",
-        body: body,
-      }),
-      invalidatesTags: ["User"],
-      async onQueryStarted(
-        arg,
-        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-      ) {},
-      async onCacheEntryAdded(
-        arg,
-        {
-          dispatch,
-          getState,
-          requestId,
-          extra,
-          getCacheEntry,
-          cacheDataLoaded,
-          cacheEntryRemoved,
-        }
-      ) {},
-    }),
-    getUserById: build.query({
-      query: (userId) => `/users/${userId}`,
-      invalidatesTags: ["User"],
-      async onQueryStarted(
-        arg,
-        { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-      ) {},
-      async onCacheEntryAdded(
-        arg,
-        {
-          dispatch,
-          getState,
-          requestId,
-          extra,
-          getCacheEntry,
-          cacheDataLoaded,
-          cacheEntryRemoved,
-        }
-      ) {},
-    }),
+    // register: build.mutation({
+    //   query: (body) => ({
+    //     url: `/register`,
+    //     method: "POST",
+    //     body: body,
+    //   }),
+    //   invalidatesTags: ["User"],
+    //   async onQueryStarted(
+    //     arg,
+    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+    //   ) {},
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     {
+    //       dispatch,
+    //       getState,
+    //       requestId,
+    //       extra,
+    //       getCacheEntry,
+    //       cacheDataLoaded,
+    //       cacheEntryRemoved,
+    //     }
+    //   ) {},
+    // }),
+    // login: build.mutation({
+    //   query: (body) => ({
+    //     url: `/login`,
+    //     method: "POST",
+    //     body: body,
+    //   }),
+    //   invalidatesTags: ["User"],
+    //   async onQueryStarted(
+    //     arg,
+    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+    //   ) {},
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     {
+    //       dispatch,
+    //       getState,
+    //       requestId,
+    //       extra,
+    //       getCacheEntry,
+    //       cacheDataLoaded,
+    //       cacheEntryRemoved,
+    //     }
+    //   ) {},
+    // }),
+    // getUsers: build.query({
+    //   query: () => `/users`,
+    //   providesTags: ["User"],
+    //   async onQueryStarted(
+    //     arg,
+    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+    //   ) {},
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     {
+    //       dispatch,
+    //       getState,
+    //       requestId,
+    //       extra,
+    //       getCacheEntry,
+    //       cacheDataLoaded,
+    //       cacheEntryRemoved,
+    //     }
+    //   ) {},
+    // }),
+
+    // getUserById: build.query({
+    //   query: (userId) => `/users/${userId}`,
+    //   providesTags: ["User"],
+    //   async onQueryStarted(
+    //     arg,
+    //     { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
+    //   ) {},
+    //   async onCacheEntryAdded(
+    //     arg,
+    //     {
+    //       dispatch,
+    //       getState,
+    //       requestId,
+    //       extra,
+    //       getCacheEntry,
+    //       cacheDataLoaded,
+    //       cacheEntryRemoved,
+    //     }
+    //   ) {},
+    // }),
     addFarmer: build.mutation({
       query: (body) => ({
         url: `/farmers`,
@@ -133,7 +155,7 @@ export const apiSlice = createApi({
     }),
     getFarmersBy: build.query({
       query: (filterBy) => `/farmers?from=${filterBy}`,
-      invalidatesTags: ["Farmers"],
+      providesTags: ["Farmer"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -153,7 +175,7 @@ export const apiSlice = createApi({
     }),
     getFarmlandsBy: build.query({
       query: (filterBy) => `/farmlands?from=${filterBy}`,
-      invalidatesTags: ["Farmlands"],
+      providesTags: ["Farmland"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -199,7 +221,7 @@ export const apiSlice = createApi({
     getPerformance: build.query({
       query: () =>
         `/performances?userId=${user?._id}&district=${user?.address?.district}&province=${user?.address?.province}`,
-      invalidatesTags: ["Performance"],
+      providesTags: ["Farmer", "Farmland", "Division", "Monitoring"],
       async onQueryStarted(
         arg,
         { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
@@ -222,9 +244,10 @@ export const apiSlice = createApi({
 
 export const { 
     // user
-    useRegisterMutation, 
-    useLoginMutation, 
-    useGetUserByIdQuery,
+    // useRegisterMutation, 
+    // useLoginMutation, 
+    // useGetUsersQuery,
+    // useGetUserByIdQuery,
 
     // farmer
     useAddFarmerMutation,

@@ -2,7 +2,8 @@
 import { Forest, LegendToggle, PersonAdd } from '@mui/icons-material'
 import { Box, Divider, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/system'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import Footer from '../../components/Footer'
 import Navbar from '../../components/Navbar'
 import Spinner from '../../components/Spinner'
@@ -18,19 +19,21 @@ const Item = styled(Box)(({ theme }) => ({
 
 const Dashboard = ({ user }) => {
 
+  const location = useLocation();
+
   let { 
     data: performance, 
     isLoading, 
     isFetching,
     isSuccess,
     isError, error }  = useGetPerformanceQuery()
+    
+
 
 
   if (isLoading || isFetching) {
     return <Spinner />
   }
-
-
 
   return (
     <Box >

@@ -24,7 +24,9 @@ import {
 import { LockOpen } from "@mui/icons-material";
 import { purple } from "@mui/material/colors";
 import { Link, Navigate } from "react-router-dom";
-import { useLoginMutation } from '../../features/api/apiSlice'
+// import { useLoginMutation } from '../../features/api/apiSlice'
+import { useDispatch, useSelector } from "react-redux";
+import { reset, resetUser, login } from '../../features/users/userSlice'
 
 const styledTextField = {
   "& label.Mui-focused": {
@@ -47,33 +49,30 @@ function Login() {
 
   const { email, password } = userData;
 
-  const [
-    login,
-    { data: user, isLoading, isSuccess, error, isError, reset },
-  ] = useLoginMutation();
-
-  if (user) {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
-
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isError || error || (user && !user?.fullname)) {
-      toast.error("Credenciais inválidas!", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else if (isSuccess) {
-      toast.success(`Bem-vindo de volta, ${user?.fullname.split(" ")[0]}`, {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-      navigate("/", { state: { user } });
-      
-    }
-    // reset();
-  }, [user, isError, error, isSuccess, navigate]);
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state)=>state.user)
+
+
+ 
+    useEffect(() => {
+      if (isSuccess) {
+        toast.success(`Bem-vindo de volta, ${user?.fullname.split(" ")[0]}`, {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        navigate("/", { state: { user } });
+      }
+      else if (isError || message || (user && !user?.fullname)) {
+        toast.error("Credenciais inválidas!", {
+          autoClose: 5000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      dispatch(reset())
+    }, [isSuccess, user, navigate, isError, message, dispatch]);
+
 
 
   // validating email
@@ -109,14 +108,8 @@ function Login() {
       };
 
       if (!isLoading){
-        try {
-          await login(userData);
-        } catch (error) {
-          
-        }
+        dispatch(login(userData));
       }
-      
-
     }
   };
 
@@ -134,8 +127,13 @@ function Login() {
         height: "80vh",
       }}
     >
+    
+      {/* {(isError || message) && (
+        <Box sx={{ width: "200px", height: "40px" }}> Algo deu errado!</Box>
+      )} */}
+
       <Paper sx={{ width: "400px", height: "80vh", position: "relative" }}>
-        <Box sx={{ postion: "absolute", marginTop: "25px",  }}>
+        <Box sx={{ postion: "absolute", marginTop: "25px" }}>
           <LockOpen fontSize="large" sx={{ color: "rebeccapurple" }} />
           <Typography
             variant="h6"
@@ -163,11 +161,11 @@ function Login() {
                 placeholder="Email"
                 size="small"
                 value={email}
-                onChange={(event)=>{
-                  setUserData((prevState)=>({
+                onChange={(event) => {
+                  setUserData((prevState) => ({
                     ...prevState,
-                    email: event.target.value.toLowerCase()
-                  }))
+                    email: event.target.value.toLowerCase(),
+                  }));
                 }}
               />
             </div>
@@ -183,11 +181,11 @@ function Login() {
                 placeholder="Password"
                 size="small"
                 value={password}
-                onChange={(event)=>{
-                  setUserData((prevState)=>({
+                onChange={(event) => {
+                  setUserData((prevState) => ({
                     ...prevState,
-                    password: event.target.value
-                  }))
+                    password: event.target.value,
+                  }));
                 }}
               />
             </div>

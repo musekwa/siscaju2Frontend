@@ -14,16 +14,23 @@ import FarmlandAdd from "./pages/farmlands/FarmlandAdd";
 import Farmer from "./pages/farmers/Farmer";
 import Farmland from "./pages/farmlands/Farmland";
 
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Routes, Route, } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import { apiSlice } from "./features/api/apiSlice";
+import Spinner from "./components/Spinner";
+import { useSelector } from "react-redux";
 const Dashboard = lazy(()=>import("./pages/dashboard/Dashboard"));
 
 
 function App() {
 
-  let user = JSON.parse(localStorage.getItem("user"));
 
+const { user, isLoading } = useSelector((state) => state.user);
+
+if (isLoading) {
+  return <Spinner />
+}
   
 
   return (

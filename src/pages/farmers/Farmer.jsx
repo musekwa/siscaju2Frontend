@@ -56,7 +56,7 @@ const Farmer = ({ user }) => {
              + new Date(date).getFullYear()
     }
 
-    const GetTotalArea = (foundFarmlands) => {
+    const GetTotalArea = () => {
       // get all the declared areas for all the farmlands
       let declaredAreas = foundFarmlands?.map((f) => f?.declaredArea);
 

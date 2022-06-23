@@ -10,12 +10,14 @@ import farmlandDivisionReducer from '../features/farmlandDivisions/farmlandDivis
 import { farmlandsApi } from "../features/farmlands/farmlandSlice";
 import { farmersApi } from '../features/farmers/farmerSlice';
 import { performancesApi } from '../features/performance/performanceSlice';
-import { usersApi } from '../features/auth/userSlice';
+import userReducer from '../features/users/userSlice';
 import { apiSlice } from '../features/api/apiSlice';
 
 
 export const store = configureStore({
   reducer: {
+    user: userReducer,
+
     [apiSlice.reducerPath]: apiSlice.reducer,
 
   },

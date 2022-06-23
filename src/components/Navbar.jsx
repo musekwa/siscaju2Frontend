@@ -15,6 +15,8 @@ import { ManageSearch, Search as SearchIcon } from '@mui/icons-material';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { resetUser } from "../features/users/userSlice";
+import { useDispatch } from "react-redux";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -61,9 +63,11 @@ const UserBox = styled(Box)(({ theme }) => ({
 
 const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
 
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  // const [open, setOpen] = useState(Boolean(anchorEl));
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -81,26 +85,21 @@ const Navbar = ({ pageDescription, user, isSearchIcon, isManageSearch }) => {
     autoClose: 5000,
     position: toast.POSITION.TOP_CENTER,
     });
-    navigate("/");
+    navigate("/signin");
+    // setOpen(false);
+    dispatch(resetUser())
   }
 
-  useEffect(()=>{
+  // useEffect(()=>{
+  //   if (!user) {
+  //     toast.info("Sessão terminada!", {
+  //       autoClose: 5000,
+  //       position: toast.POSITION.TOP_CENTER,
+  //     })
+  //     navigate('/signin')
+  //   }
 
-    let localUser = JSON.parse(localStorage.getItem("user"));
-
-    if (!user && !localUser) {
-      toast.info("Sessão terminada!", {
-        autoClose: 5000,
-        position: toast.POSITION.TOP_CENTER,
-      })
-      navigate('/signin')
-    }
-
-  }, [navigate, open, user]);
-
-  if (!user ){
-    return navigate("/signin");
-  }
+  // }, [navigate, open, user]);
 
     
 
